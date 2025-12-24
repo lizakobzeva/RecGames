@@ -101,4 +101,26 @@ http://127.0.0.1:8000/
 
 <img width="1858" height="1053" alt="изображение" src="https://github.com/user-attachments/assets/fd47c57c-ce5b-4964-9690-a6d26454a18a" />
 
+### Страница игры
 
+<img width="1858" height="1053" alt="image" src="https://github.com/user-attachments/assets/55e31a83-1dd8-471a-94be-1d78d76f640a" />
+
+### Страница рекомендаций
+
+<img width="1858" height="1053" alt="image" src="https://github.com/user-attachments/assets/b66d5e77-7ab6-4a9e-b5f3-82bc664b0ffc" />
+
+### Страница подборок
+
+<img width="1858" height="1053" alt="image" src="https://github.com/user-attachments/assets/45c1754c-3223-4864-baa1-018057e43b1a" />
+
+### Страница избранного
+
+<img width="1858" height="1053" alt="image" src="https://github.com/user-attachments/assets/d9f98fe4-dc12-4b5a-a3d1-87307e289855" />
+
+## ER-диаграмма
+
+<img width="1180" height="708" alt="image" src="https://github.com/user-attachments/assets/1ff16b53-d0a6-4e85-9a02-f7f87d2b3a77" />
+
+## Архитектурная схема
+
+<img width="1357" height="724" alt="image" src="https://github.com/user-attachments/assets/8737a1c1-e99f-465e-818f-a301f05440d1" />
