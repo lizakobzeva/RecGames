@@ -1,0 +1,276 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="create-collection-page">
+        <h1>Создать новую подборку</h1>
+        
+        <div class="create-collection-form">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-field">
+                    <label for="{{ form.title.id_for_label }}">Название подборки:</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="error-message">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.description.id_for_label }}">Описание:</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="error-message">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <div class="checkbox-container">
+                        <label class="checkbox-label">
+                            <span class="checkbox-text">Публичная подборка</span>
+                            {{ form.is_public }}
+                            <span class="checkbox-custom"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Создать подборку</button>
+                    <a href="{% url 'collections' %}" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.create-collection-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.create-collection-page h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.create-collection-form {
+    background: rgba(30, 41, 59, 0.7);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--glass-border);
+    padding: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.form-field {
+    margin-bottom: 25px;
+}
+
+.form-field label {
+    display: block;
+    color: var(--light);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.create-collection-form input[type="text"],
+.create-collection-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    background: rgba(15, 23, 42, 0.9);
+    color: white;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.create-collection-form textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.create-collection-form input[type="text"]:focus,
+.create-collection-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.checkbox-container {
+    margin-top: 15px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-text {
+    color: var(--light);
+    font-weight: 500;
+    font-size: 1rem;
+    flex-grow: 1;
+}
+
+.checkbox-custom {
+    width: 22px;
+    height: 22px;
+    border: 8px solid var(--primary);
+    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.9);
+    position: relative;
+    flex-shrink: 0;
+    margin-left: 10px;
+    transition: var(--transition);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.checkbox-label:hover .checkbox-custom {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.checkbox-help {
+    display: block;
+    margin-top: 5px;
+    color: var(--gray);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding-left: 32px;
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    flex: 1;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+    background: var(--secondary-light);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .create-collection-page {
+        padding: 20px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .checkbox-label {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const customCheckboxes = document.querySelectorAll('.checkbox-custom');
+    
+    customCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', function() {
+            const realCheckbox = this.previousElementSibling; 
+            if (realCheckbox && realCheckbox.type === 'checkbox') {
+                realCheckbox.checked = !realCheckbox.checked;
+                realCheckbox.dispatchEvent(new Event('change'));
+            }
+        });
+        
+        const label = checkbox.closest('.checkbox-label');
+        if (label) {
+            label.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('checkbox-custom')) {
+                    const realCheckbox = this.querySelector('input[type="checkbox"]');
+                    if (realCheckbox) {
+                        realCheckbox.checked = !realCheckbox.checked;
+                        realCheckbox.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+        }
+    });
+    
+    const checkboxes = document.querySelectorAll('.checkbox-label input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const customCheckbox = checkbox.nextElementSibling;
+            if (customCheckbox && customCheckbox.classList.contains('checkbox-custom')) {
+                checkbox.dispatchEvent(new Event('change'));
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

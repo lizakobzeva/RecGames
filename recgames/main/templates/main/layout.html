@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecGames - {{ title }}</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-darker: #3730a3;
+            --primary-light: #818cf8;
+            --secondary: #1e293b;
+            --secondary-light: #334155;
+            --accent: #8b5cf6;
+            --accent-dark: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #475569;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+            --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            --shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 15px 30px -8px rgba(99, 102, 241, 0.4);
+            --transition: all 0.3s ease;
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(99, 102, 241, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--gradient-bg);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .light-balls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .light-ball {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(99, 102, 241, 0.4) 0%, 
+                rgba(99, 102, 241, 0.2) 30%, 
+                rgba(99, 102, 241, 0.1) 60%, 
+                transparent 80%);
+            filter: blur(20px);
+            opacity: 0.6;
+            animation: float-ball linear infinite;
+        }
+
+        .ball-1 {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            left: 5%;
+            animation-duration: 30s;
+            animation-delay: 0s;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(99, 102, 241, 0.4) 0%, 
+                rgba(99, 102, 241, 0.2) 30%, 
+                rgba(99, 102, 241, 0.1) 60%, 
+                transparent 80%);
+        }
+
+        .ball-2 {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-duration: 35s;
+            animation-delay: 5s;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(139, 92, 246, 0.4) 0%, 
+                rgba(139, 92, 246, 0.2) 30%, 
+                rgba(139, 92, 246, 0.1) 60%, 
+                transparent 80%);
+        }
+
+        .ball-3 {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-duration: 40s;
+            animation-delay: 10s;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(129, 140, 248, 0.4) 0%, 
+                rgba(129, 140, 248, 0.2) 30%, 
+                rgba(129, 140, 248, 0.1) 60%, 
+                transparent 80%);
+        }
+
+        .ball-4 {
+            width: 90px;
+            height: 90px;
+            top: 30%;
+            right: 20%;
+            animation-duration: 45s;
+            animation-delay: 15s;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(124, 58, 237, 0.4) 0%, 
+                rgba(124, 58, 237, 0.2) 30%, 
+                rgba(124, 58, 237, 0.1) 60%, 
+                transparent 80%);
+        }
+
+        .ball-5 {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            left: 70%;
+            animation-duration: 50s;
+            animation-delay: 20s;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(192, 132, 252, 0.4) 0%, 
+                rgba(192, 132, 252, 0.2) 30%, 
+                rgba(192, 132, 252, 0.1) 60%, 
+                transparent 80%);
+        }
+
+        .ball-6 {
+            width: 130px;
+            height: 130px;
+            top: 20%;
+            left: 50%;
+            animation-duration: 55s;
+            animation-delay: 25s;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(99, 102, 241, 0.4) 0%, 
+                rgba(99, 102, 241, 0.2) 30%, 
+                rgba(99, 102, 241, 0.1) 60%, 
+                transparent 80%);
+        }
+
+        @keyframes float-ball {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translate(calc(100vw - 200px), calc(50vh - 100px)) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translate(calc(50vw - 100px), calc(100vh - 200px)) rotate(180deg) scale(0.9);
+            }
+            75% {
+                transform: translate(calc(20vw - 50px), calc(30vh - 60px)) rotate(270deg) scale(1.2);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg) scale(1);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.6;
+                filter: blur(20px) brightness(1);
+            }
+            50% {
+                opacity: 0.8;
+                filter: blur(25px) brightness(1.2);
+            }
+        }
+
+        .light-ball {
+            animation: float-ball linear infinite, twinkle 4s ease-in-out infinite;
+        }
+
+        .ball-1 { animation: float-ball 30s linear infinite, twinkle 5s ease-in-out infinite; }
+        .ball-2 { animation: float-ball 35s linear infinite, twinkle 6s ease-in-out infinite; }
+        .ball-3 { animation: float-ball 40s linear infinite, twinkle 7s ease-in-out infinite; }
+        .ball-4 { animation: float-ball 45s linear infinite, twinkle 4s ease-in-out infinite; }
+        .ball-5 { animation: float-ball 50s linear infinite, twinkle 5s ease-in-out infinite; }
+        .ball-6 { animation: float-ball 55s linear infinite, twinkle 6s ease-in-out infinite; }
+
+        .star-dust {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: 
+                radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.3) 1px, transparent 0),
+                radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.3) 1px, transparent 0),
+                radial-gradient(1px 1px at 30% 40%, rgba(255, 255, 255, 0.3) 1px, transparent 0),
+                radial-gradient(1.5px 1.5px at 40% 50%, rgba(255, 255, 255, 0.4) 1px, transparent 0),
+                radial-gradient(1.5px 1.5px at 50% 60%, rgba(255, 255, 255, 0.4) 1px, transparent 0),
+                radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.5) 1px, transparent 0),
+                radial-gradient(2px 2px at 70% 80%, rgba(255, 255, 255, 0.5) 1px, transparent 0),
+                radial-gradient(1px 1px at 80% 90%, rgba(255, 255, 255, 0.3) 1px, transparent 0),
+                radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.3) 1px, transparent 0);
+            background-size: 300px 300px;
+            animation: star-twinkle 3s infinite alternate;
+        }
+
+        @keyframes star-twinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(129, 140, 248, 0.05) 0%, transparent 30%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .app-wrapper {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            min-height: 90vh;
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: none;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: var(--primary-light);
+        }
+
+        nav {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 1rem 0;
+            position: relative;
+            border-bottom: none;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            background: var(--gradient-primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        nav a::before {
+            font-size: 1.1rem;
+        }
+
+        nav a[href*="home"]::before { content: '🏠'; }
+        nav a[href*="information"]::before { content: '🎮'; }
+        nav a[href*="recommendations"]::before { content: '✨'; }
+        nav a[href*="search"]::before { content: '🔍'; }
+        nav a[href*="favorites"]::before { content: '❤️'; }
+        nav a[href*="collections"]::before { content: '📁'; }
+        nav a[href*="profile"]::before { content: '👤'; }
+
+        main {
+            padding: 2.5rem;
+            min-height: 60vh;
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            padding: 2.5rem 2rem;
+            margin-top: 3rem;
+            border-top: none;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-light);
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--primary-light);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.6;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .light-ball {
+                animation-duration: 20s !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .nav-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            nav a {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.8rem;
+                justify-content: center;
+            }
+            
+            main {
+                padding: 1.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .light-ball {
+                opacity: 0.3;
+                filter: blur(15px);
+                animation-duration: 15s !important;
+            }
+            
+            .star-dust {
+                opacity: 0.2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .light-ball {
+                display: none;
+            }
+            
+            .ball-1, .ball-2 {
+                display: block;
+                opacity: 0.2;
+                animation-duration: 10s !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="star-dust"></div>
+    <div class="light-balls">
+        <div class="light-ball ball-1"></div>
+        <div class="light-ball ball-2"></div>
+        <div class="light-ball ball-3"></div>
+        <div class="light-ball ball-4"></div>
+        <div class="light-ball ball-5"></div>
+        <div class="light-ball ball-6"></div>
+    </div>
+    <div class="bg-texture"></div>
+
+    <div class="container">
+        <div class="app-wrapper">
+            <header>
+                <div class="header-content">
+                    <h1>🎮 RecGames</h1>
+                    <p class="subtitle">Откройте для себя мир увлекательных игр</p>
+                </div>
+            </header>
+            
+            <nav>
+                <div class="nav-container">
+                    <a href="{% url 'home' %}">Главная</a>
+                    <a href="{% url 'search' %}">Поиск</a>
+                    <a href="{% url 'recommendations' %}">Рекомендации</a>
+                    <a href="{% url 'collections' %}">Подборки</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'favorites' %}">Избранное</a>
+                        <a href="{% url 'profile' %}">Профиль</a> 
+                    {% else %}
+                        <a href="{% url 'login' %}">Войти</a> 
+                        <a href="{% url 'register' %}">Регистрация</a>
+                    {% endif %}
+                </div>
+            </nav>
+            
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
+            
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>О RecGames</h3>
+                        <p style="color: var(--gray); font-size: 1rem; line-height: 1.5;">Платформа для поиска и рекомендаций игр на основе тегов.</p>
+                        
+                        <br> 
+                        
+                        <div class="footer-links">
+                            <a href="{% url 'about' %}"> О нас</a>
+                            <a href="{% url 'contact' %}"> Обратная связь </a>
+                        </div>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Навигация</h3>
+                        <div class="footer-links">
+                            <a href="{% url 'home' %}">🏠 Главная</a>
+                            <a href="{% url 'search' %}">🔍 Поиск</a>
+                            <a href="{% url 'recommendations' %}">✨ Рекомендации</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>Создано в рамках изучения Django. &copy; 2025 RecGames</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

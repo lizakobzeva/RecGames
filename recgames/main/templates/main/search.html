@@ -1,0 +1,338 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="search-form-container">
+        <form method="get" action="{% url 'search' %}" class="search-form">
+            <div class="search-input-wrapper">
+                <input type="text" 
+                       name="q" 
+                       value="{{ query }}" 
+                       placeholder="Введите название игры..." 
+                       class="search-input"
+                       autocomplete="off"
+                       autofocus>
+                <button type="submit" class="search-button">
+                    🔍 Поиск
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="search-results">
+        {% if query %}
+        <div class="results-header">
+            <h2>Результаты поиска для "{{ query }}"</h2>
+            <div class="results-info">
+                <span class="results-count">Найдено игр: {{ results_count }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if query and results_count > 0 %}
+        <div class="games-grid search-grid">
+            {% for game in games %}
+            <a href="{% url 'game_detail' game.id %}" class="game-card-link">
+                <div class="game-card">
+                    <div class="game-image-wrapper">
+                        <div class="game-image-container">
+                            <img src="{{ game.game_image }}" alt="{{ game.title }}" class="game-cover-adaptive" onload="this.style.opacity='1'">
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title-search">{{ game.title }}</h3>
+                        <div class="game-meta">
+                            <span class="genre">{{ game.get_genre_display }}</span>
+                            <span class="year">{{ game.release_year }}</span>
+                        </div>
+                        <div class="game-rating">
+                            <span class="rating">★ {{ game.rating }}/10</span>
+                            <span class="price">{{ game.price }} ₽</span>
+                        </div>
+                        <p class="game-developer">{{ game.developer }}</p>
+                        <span class="view-details">Подробнее →</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% elif query and results_count == 0 %}
+        <div class="no-results">
+            <div class="no-results-icon">😕</div>
+            <h3>Игры не найдены</h3>
+            <p>По запросу "<strong>{{ query }}</strong>" ничего не найдено.</p>
+            <p>Попробуйте:</p>
+            <ul class="search-tips">
+                <li>Проверить правильность написания</li>
+                <li>Использовать более общие ключевые слова</li>
+                <li>Искать по части названия</li>
+            </ul>
+        </div>
+        {% elif not query %}
+        <div class="search-placeholder">
+            <p>Введите название игры в поле поиска выше</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.search-form-container {
+    max-width: 700px;
+    margin: 30px auto 40px;
+}
+
+.search-form {
+    width: 100%;
+}
+
+.search-input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 16px;
+    border: 2px solid #2f3b8b;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #1b2838;
+}
+
+.search-button {
+    background: #2f3b8b;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+}
+
+.search-button:hover {
+    background: #1b382e;
+}
+
+.results-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.results-header h2 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.results-count {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.results-tip {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.game-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.game-card-link:hover {
+    transform: translateY(-5px);
+}
+
+.game-card {
+    background: rgb(43, 42, 86);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.game-image-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.game-cover-adaptive {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.game-card-link:hover .game-cover-adaptive {
+    transform: scale(1.03);
+}
+
+.game-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-title-search {
+    font-size: 23px;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+    color: white;
+    flex-grow: 1;
+}
+
+.game-meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.genre, .year {
+    background: #f0f0f0;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+.game-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rating {
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.price {
+    color: #2ecc71;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.game-developer {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.view-details {
+    color: #3498db;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: auto;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.game-card-link:hover .view-details {
+    color: #2980b9;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 40px;
+}
+
+.no-results-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.no-results h3 {
+    color: #ffffff;
+    margin-bottom: 15px;    
+}
+
+.no-results p {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.search-tips {
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: left;
+    list-style-position: inside;
+    color: #ffffff;
+}
+
+.search-tips li {
+    margin-bottom: 8px;
+}
+
+.search-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 40px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .search-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .search-button {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .search-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-info {
+        padding: 15px;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Вход в систему{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h1>Вход в аккаунт</h1>
+
+    {% if error %}
+    <div class="alert alert-error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" name="username" id="username" required 
+                   placeholder="Введите имя пользователя">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" id="password" required 
+                   placeholder="Введите пароль">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+
+    <p class="auth-link">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
+</div>
+
+<style>
+    .auth-container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(10px);
+    }
+
+    .auth-container h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: var(--primary-light);
+    }
+
+    .form-group input {
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        background: rgba(15, 23, 42, 0.8);
+        color: white;
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-primary {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        color: #fecaca;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--gray);
+    }
+
+    .auth-link a {
+        color: var(--primary-light);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .auth-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

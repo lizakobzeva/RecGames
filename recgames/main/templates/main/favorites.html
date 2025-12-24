@@ -1,0 +1,465 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="favorites-page">
+        <h1>Избранное</h1>
+        
+        <div class="favorites-layout">
+            <div class="favorite-collections-section">
+                <h2>Избранные подборки</h2>
+                {% if favorite_collections %}
+                    <div class="collections-grid">
+                        {% for collection in favorite_collections %}
+                        <div class="collection-card">
+                            {% if collection.cover_image %}
+                            <div class="collection-image-container">
+                                <img src="{{ collection.cover_image }}" alt="{{ collection.title }}" class="collection-cover">
+                            </div>
+                            {% endif %}
+                            <div class="collection-info">
+                                <div class="collection-header">
+                                    <h3>{{ collection.title }}</h3>
+                                    <button class="favorite-heart-btn active" 
+                                            data-collection-id="{{ collection.id }}" 
+                                            title="Удалить из избранного">
+                                        <svg class="heart-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="collection-description">{{ collection.description|truncatechars:100 }}</p>
+                                <div class="collection-meta">
+                                    <span class="meta-item">👤 {{ collection.user.username }}</span>
+                                    <span class="meta-item likes-count" data-collection-id="{{ collection.id }}">❤️ {{ collection.likes_count }}</span>
+                                    <span class="meta-item">🎮 {{ collection.games.count }}</span>
+                                </div>
+                                <div class="collection-actions">
+                                    <a href="{% url 'collection_detail' collection.id %}" class="btn btn-view">Открыть</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-message">У вас нет избранных подборок</p>
+                {% endif %}
+            </div>
+
+            <div class="favorite-games-section">
+                <h2>Избранные игры</h2>
+                {% if favorite_games %}
+                    <div class="games-grid">
+                        {% for game in favorite_games %}
+                        <div class="game-card">
+                            <div class="game-image-container">
+                                <img src="{{ game.game_image }}" alt="{{ game.title }}" class="game-cover-adaptive">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-header">
+                                    <h3>{{ game.title }}</h3>
+                                    <button class="favorite-heart-btn-game active" 
+                                            data-game-id="{{ game.id }}" 
+                                            title="Удалить из избранного">
+                                        <svg class="heart-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="game-meta">
+                                    <span class="genre">{{ game.get_genre_display }}</span>
+                                    <span class="year">{{ game.release_year }}</span>
+                                </div>
+                                <div class="game-rating">
+                                    <span class="rating">★ {{ game.rating }}/10</span>
+                                    <span class="price">{{ game.price }} ₽</span>
+                                </div>
+                                <div class="game-actions">
+                                    <a href="{% url 'game_detail' game.id %}" class="btn btn-view">Подробнее</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-message">У вас нет избранных игр</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.favorites-page {
+    padding: 20px;
+}
+
+.favorites-page h1 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.favorites-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.favorite-collections-section,
+.favorite-games-section {
+    background: rgba(30, 41, 59, 0.7);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--glass-border);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.favorite-collections-section h2,
+.favorite-games-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary-light);
+    font-size: 1.5rem;
+}
+
+.collections-grid,
+.games-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.collection-card,
+.game-card {
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.collection-card:hover,
+.game-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.collection-header,
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.collection-header h3,
+.game-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    flex-grow: 1;
+    color: white;
+}
+
+.favorite-heart-btn,
+.favorite-heart-btn-game {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    border-radius: 4px;
+}
+
+.favorite-heart-btn:hover,
+.favorite-heart-btn-game:hover {
+    transform: scale(1.2);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.heart-icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.2s ease;
+}
+
+.favorite-heart-btn.active .heart-icon,
+.favorite-heart-btn-game.active .heart-icon {
+    stroke: #ff4757;
+    fill: #ff4757;
+}
+
+.favorite-heart-btn.active:hover .heart-icon,
+.favorite-heart-btn-game.active:hover .heart-icon {
+    stroke: #ff6b81;
+    fill: #ff6b81;
+}
+
+.collection-image-container {
+    height: 150px;
+    overflow: hidden;
+}
+
+.collection-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.collection-info,
+.game-info {
+    padding: 15px;
+}
+
+.collection-description {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.collection-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    font-size: 0.8rem;
+    color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.game-image-container {
+    height: 180px;
+    overflow: hidden;
+}
+
+.game-cover-adaptive {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-meta {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.genre, .year {
+    background: rgba(99, 102, 241, 0.2);
+    color: var(--primary-light);
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.game-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rating {
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.price {
+    color: #2ecc71;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.collection-actions,
+.game-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-view {
+    background: var(--accent);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.btn-view:hover {
+    background: var(--accent-dark);
+}
+
+.empty-message {
+    color: var(--gray);
+    text-align: center;
+    padding: 20px;
+}
+
+@media (max-width: 1024px) {
+    .favorites-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .favorites-page {
+        padding: 15px;
+    }
+    
+    .collection-header,
+    .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .favorite-heart-btn,
+    .favorite-heart-btn-game {
+        align-self: flex-end;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteButtons = document.querySelectorAll('.favorite-heart-btn');
+    favoriteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const collectionId = this.dataset.collectionId;
+            removeFromFavorites(collectionId, 'collection', this.closest('.collection-card'));
+        });
+    });
+    
+    const favoriteGameButtons = document.querySelectorAll('.favorite-heart-btn-game');
+    favoriteGameButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const gameId = this.dataset.gameId;
+            removeFromFavorites(gameId, 'game', this.closest('.game-card'));
+        });
+    });
+    
+    function removeFromFavorites(id, type, element) {
+        const url = type === 'collection' 
+            ? `/collection/${id}/toggle-favorite/`
+            : `/game/${id}/toggle-favorite/`;
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'removed') {
+                if (type === 'collection' && data.likes_count !== undefined) {
+                    const likesElement = element.querySelector(`.likes-count[data-collection-id="${id}"]`);
+                    if (likesElement) {
+                        likesElement.textContent = `❤️ ${data.likes_count}`;
+                    }
+                }
+                
+                const button = element.querySelector('.favorite-heart-btn, .favorite-heart-btn-game');
+                if (button) {
+                    button.classList.remove('active');
+                    button.setAttribute('title', 'Добавить в избранное');
+                }
+                
+                showNotification('Удалено из избранного');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Ошибка при удалении', 'error');
+        });
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'error' ? 'var(--danger)' : 'var(--success)'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Заголовок -->
+    <div class="about-header">
+        <h1>О сайте</h1>
+        <p class="about-lead">Этот сайт создан для простого выбора игр и создания собственных подборок.</p>
+    </div>
+    
+    <!-- Контент -->
+    <div class="about-main">
+        <h2>Что есть на сайте</h2>
+        
+        <div class="about-list">
+            <div class="about-item">
+                <span class="item-icon">📚</span>
+                <div class="item-content">
+                    <h3>Подробная информация об играх</h3>
+                    <p>Полные описания, рейтинги, цены и характеристики игр</p>
+                </div>
+            </div>
+            
+            <div class="about-item">
+                <span class="item-icon">✨</span>
+                <div class="item-content">
+                    <h3>Система рекомендаций на основе тегов</h3>
+                    <p>Персональный подбор игр по вашим интересам</p>
+                </div>
+            </div>
+            
+            <div class="about-item">
+                <span class="item-icon">❤️</span>
+                <div class="item-content">
+                    <h3>Возможность сохранять игры в избранное</h3>
+                    <p>Добавляйте понравившиеся игры для быстрого доступа</p>
+                </div>
+            </div>
+            
+            <div class="about-item">
+                <span class="item-icon">📁</span>
+                <div class="item-content">
+                    <h3>Создание собственных подборок</h3>
+                    <p>Собирайте тематические коллекции игр и делитесь ими</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.about-lead {
+    font-size: 1.2rem;
+    color: #dfdfdf;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.about-main {
+    margin-top: 30px;
+}
+
+.about-main h2 {
+    font-size: 1.8rem;
+    color: #736cd1;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.about-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.about-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    background: #8e69e669;
+    border-radius: 12px;
+    border-left: 4px solid #443275;
+    transition: transform 0.2s ease;
+}
+
+.about-item:hover {
+    transform: translateX(5px);
+}
+
+.item-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.item-content {
+    flex: 1;
+}
+
+.item-content h3 {
+    font-size: 1.2rem;
+    color: #967ef4;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.item-content p {
+    color: #ffffff;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 15px;
+    }
+    
+    .about-header h1 {
+        font-size: 2rem;
+    }
+    
+    .about-lead {
+        font-size: 1.1rem;
+    }
+    
+    .about-main h2 {
+        font-size: 1.5rem;
+    }
+    
+    .about-item {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .item-icon {
+        font-size: 1.5rem;
+    }
+    
+    .item-content h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .about-main h2 {
+        font-size: 1.3rem;
+    }
+    
+    .about-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .item-icon {
+        margin-top: 0;
+    }
+}
+</style>
+{% endblock %}

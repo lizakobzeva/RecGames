@@ -1,0 +1,269 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="contact-header">
+        <h1>Обратная связь</h1>
+        <p class="contact-lead">Мы всегда рады вашим вопросам и предложениям!</p>
+    </div>
+    
+    <div class="contact-main">
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="message message-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="contact-form">
+            <h2>Форма обратной связи</h2>
+            
+            <form method="post" class="feedback-form">
+                {% csrf_token %}
+                
+                <div class="form-field">
+                    <label for="{{ form.name.id_for_label }}">
+                        {{ form.name.label }}
+                        {% if form.name.field.required %}
+                        <span class="required">*</span>
+                        {% endif %}
+                    </label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="error-list">
+                        {{ form.name.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.email.id_for_label }}">
+                        {{ form.email.label }}
+                        {% if form.email.field.required %}
+                        <span class="required">*</span>
+                        {% endif %}
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="error-list">
+                        {{ form.email.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.message.id_for_label }}">
+                        {{ form.message.label }}
+                        {% if form.message.field.required %}
+                        <span class="required">*</span>
+                        {% endif %}
+                    </label>
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                    <div class="error-list">
+                        {{ form.message.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    Отправить сообщение
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #ffffff;
+}
+
+.contact-lead {
+    font-size: 1.5rem;
+    color: #a98afc;
+    line-height: 2;
+}
+
+/* Сообщения */
+.messages-container {
+    margin-bottom: 30px;
+}
+
+.message {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+}
+
+.message-success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.message-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.message-info {
+    background: #d1ecf1;
+    color: #a3215b;
+    border-color: #bee5eb;
+}
+
+
+.contact-form h2 {
+    font-size: 1.8rem;
+    color: #ebebeb;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.feedback-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-field {
+    margin-bottom: 25px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #d1d1d1;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.required {
+    color: #ff5656;
+    font-weight: bold;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: #2f3b8b;
+    box-shadow: 0 0 0 3px rgba(47, 59, 139, 0.1);
+}
+
+.form-field textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.error-list {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #e74c3c;
+}
+
+.error-list ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.error-list li {
+    margin-bottom: 3px;
+}
+
+.submit-btn {
+    background: #2f3b8b;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: #252f6b;
+}
+
+.submit-btn:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 15px;
+    }
+    
+    .contact-header h1 {
+        font-size: 2rem;
+    }
+    
+    .contact-lead {
+        font-size: 1.1rem;
+    }
+    
+    .contact-form {
+        padding: 25px;
+        margin: 0 10px;
+    }
+    
+    .contact-form h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-field input,
+    .form-field textarea {
+        padding: 10px 12px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .contact-form {
+        padding: 20px;
+        margin: 0 5px;
+    }
+    
+    .contact-form h2 {
+        font-size: 1.3rem;
+    }
+    
+    .submit-btn {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+</style>
+{% endblock %}
